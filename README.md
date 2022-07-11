@@ -21,7 +21,7 @@ $ docker-compose exec auth_service yarn run test
 ## 📦 Pull from GitHub Repository Container Registry
 ```sh
 # docker pull ghcr.io/OWNER/IMAGE_NAME
-$ docker pull ghcr.io/spencerlepine/express-docker-boilerplate:0.1.0
+$ docker pull ghcr.io/llama-as-a-service/auth-service:0.1.0
 ```
 
 ## API Documentation
