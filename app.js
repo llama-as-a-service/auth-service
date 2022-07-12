@@ -2,22 +2,50 @@ const express = require("express");
 const bcrypt = require("bcryptjs")
 const jwt = require("jsonwebtoken")
 const config = require("./config")
+const cors = require('cors');
 
 const app = express();
 
 app.use(express.json());
+app.use(cors({
+  origin: '*'
+}));
+// app.use(function (req, res, next) {
+//   res.header("Access-Control-Allow-Origin", "*"); // update to match the domain you will make the request from
+//   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+//   next();
+// });
 
 const User = require("./src/model/user");
 
-const { TOKEN_KEY } = config
+const { JWT_TOKEN_KEY } = config
 
 const auth = require("./src/middleware/auth");
 
-app.post("/authenticate", auth, (req, res) => {
-  return res.status(200).json({
-    message: "Successfully authenticated",
-    status: "success"
-  });
+const validToken = async (tokenToCheck) => {
+  // Does token match secret
+  try {
+    const decoded = jwt.verify(token, JWT_TOKEN_KEY);
+    return decoded
+  } catch (err) {
+    return false
+  }
+}
+
+app.post("/authenticate", auth, async (req, res) => {
+  const token = req.body.token
+
+  if (validToken(token)) {
+    return res.status(200).json({
+      message: "Successfully authenticated",
+      status: "success"
+    });
+  } else {
+    return res.status(403).json({
+      message: "Failed to Authenticated",
+      status: "fail"
+    });
+  }
 });
 
 // Register
@@ -60,7 +88,7 @@ app.post("/register", async (req, res) => {
     // Create token
     const token = jwt.sign(
       { user_id: user._id, email },
-      TOKEN_KEY,
+      JWT_TOKEN_KEY,
       {
         expiresIn: "2h",
       }
@@ -78,49 +106,49 @@ app.post("/register", async (req, res) => {
 
 // Login
 app.post("/login", async (req, res) => {
+  const loginCreds = {}
+  if (req.body === 'object') {
+    loginCreds['email'] = req.body.email
+    loginCreds['password'] = req.body.password
+  }
 
-  // Our login logic starts here
-  try {
-    // Get user input
-    const { email, password } = req.body;
+  // Get user input
+  const { email, password } = req.body;
 
-    // Validate user input
-    if (!(email && password)) {
-      return res.status(400).json({
-        message: "All input is required",
-        status: "fail"
-      });
-    }
-    // Validate if user exist in our database
-    const user = await User.findOne({ email });
-
-    if (user && (await bcrypt.compare(password, user.password))) {
-      // Create token
-      const token = jwt.sign(
-        { user_id: user._id, email },
-        TOKEN_KEY,
-        {
-          expiresIn: "2h",
-        }
-      );
-
-      // save user token
-      user.token = token;
-
-      // user
-      return res.status(200).json(user);
-    } else {
-      res.status(400).json({
-        message: "Invalid Credentials",
-        status: "fail"
-      });
-    }
-  } catch (err) {
-    res.status(500).json({
-      message: "Server Failure",
+  // Validate user input
+  if (!(email && password)) {
+    return res.status(400).json({
+      message: "All input is required",
       status: "fail"
     });
   }
+
+  // Validate if user exist in our database
+  const user = await User.findOne({ email });
+  const validation = await bcrypt.compare(password, user ? user.password : '')
+
+  if (validation) {
+    // Create token
+    const token = jwt.sign(
+      { user_id: user._id, email },
+      JWT_TOKEN_KEY,
+      {
+        expiresIn: "2h",
+      }
+    );
+
+    // save user token
+    user.token = token;
+
+    // user
+    return res.status(200).json(user);
+  }
+
+  res.status(403).json({
+    message: "Invalid Credentials",
+    status: "fail"
+  });
+
 });
 
 module.exports = app;

@@ -1,6 +1,6 @@
 # LaaS Authentication API Service
 
-[![CI](https://github.com/llama-as-a-service/auth-service/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/llama-as-a-service/auth-service/actions/workflows/ci.yml) [![Publish Docker](https://github.com/llama-as-a-service/auth-service/actions/workflows/publish-to-ghcr.yml/badge.svg?branch=main)](https://github.com/llama-as-a-service/auth-service/actions/workflows/publish-to-ghcr.yml)[![Stable Version](https://img.shields.io/github/v/tag/llama-as-a-service/auth-service)](https://img.shields.io/github/v/tag/llama-as-a-service/auth-service) [![Latest Release](https://img.shields.io/github/v/release/llama-as-a-service/auth-service?color=%233D9970)](https://img.shields.io/github/v/tag/llama-as-a-service/auth-service?color=%233D9970)
+[![CI](https://github.com/llama-as-a-service/auth-service/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/llama-as-a-service/auth-service/actions/workflows/ci.yml) [![Heroku Deploy](https://github.com/llama-as-a-service/auth-service/actions/workflows/heroku-deploy.yml/badge.svg?branch=main)](https://github.com/llama-as-a-service/auth-service/actions/workflows/heroku-deploy.yml) [![Publish Docker](https://github.com/llama-as-a-service/auth-service/actions/workflows/publish-to-ghcr.yml/badge.svg?branch=main)](https://github.com/llama-as-a-service/auth-service/actions/workflows/publish-to-ghcr.yml) [![Stable Version](https://img.shields.io/github/v/tag/llama-as-a-service/auth-service)](https://img.shields.io/github/v/tag/llama-as-a-service/auth-service) [![Latest Release](https://img.shields.io/github/v/release/llama-as-a-service/auth-service?color=%233D9970)](https://img.shields.io/github/v/tag/llama-as-a-service/auth-service?color=%233D9970)
 
 Authentication API Service. Built with NodeJS, Express, and Docker. Connects to the MongoDB User Database.
 
@@ -21,7 +21,7 @@ $ docker-compose exec auth_service yarn run test
 ## 📦 Pull from GitHub Repository Container Registry
 ```sh
 # docker pull ghcr.io/OWNER/IMAGE_NAME
-$ docker pull ghcr.io/spencerlepine/express-docker-boilerplate:0.1.0
+$ docker pull ghcr.io/llama-as-a-service/auth-service:0.1.0
 ```
 
 ## API Documentation
@@ -58,7 +58,7 @@ $ docker pull ghcr.io/spencerlepine/express-docker-boilerplate:0.1.0
 | URL    | /authenticate |
 |--------|---------------|
 | Method | POST          |
-| Status | 201 OK        |
+| Status | 200 OK        |
 
 #### Example Headers
 ```json
@@ -80,7 +80,7 @@ $ docker pull ghcr.io/spencerlepine/express-docker-boilerplate:0.1.0
 | URL    | /login  |
 |--------|---------|
 | Method | POST    |
-| Status | 201 OK  |
+| Status | 200 OK  |
 
 #### Example Headers
 ```json
