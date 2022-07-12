@@ -58,7 +58,7 @@ $ docker pull ghcr.io/llama-as-a-service/auth-service:0.1.0
 | URL    | /authenticate |
 |--------|---------------|
 | Method | POST          |
-| Status | 201 OK        |
+| Status | 200 OK        |
 
 #### Example Headers
 ```json
@@ -80,7 +80,7 @@ $ docker pull ghcr.io/llama-as-a-service/auth-service:0.1.0
 | URL    | /login  |
 |--------|---------|
 | Method | POST    |
-| Status | 201 OK  |
+| Status | 200 OK  |
 
 #### Example Headers
 ```json
